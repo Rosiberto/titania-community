@@ -79,7 +79,7 @@ void loop() {
 
 if ((millis() - lastTime) > timerDelay) { 
   
-  //Verifica o estado da conexão WiFi 
+  //Verifica o estado da conexão Wi-Fi 
   if(WiFi.status()== WL_CONNECTED){
     HTTPClient http;
     String urlPath = url;
