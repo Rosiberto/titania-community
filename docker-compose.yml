@@ -1,0 +1,102 @@
+services:
+  
+  orion:
+    image: fiware/orion:4.2.0
+    hostname: orion
+    container_name: orion
+    restart: always
+    networks:
+      - reflex_default
+    ports:
+      - "1026:1026"
+    command: -dbURI mongodb://mongo -corsOrigin __ALL -logLevel DEBUG -noCache
+    depends_on:
+      mongo:
+          condition: service_healthy
+
+  mongo:    
+    image: mongo:8.0
+    hostname: mongo
+    container_name: mongo
+    networks:
+      - reflex_default
+    expose:
+      - "27017"
+    command: --bind_ip_all
+    restart: always
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5   
+    volumes:
+      - mongo:/data
+      
+  agentjson:
+    image: fiware/iotagent-json:3.7.0
+    hostname: agentjson
+    container_name: agentjson
+    restart: always
+    depends_on:
+      - mongo
+      - orion
+    networks:
+      - reflex_default
+    expose:
+      - "4041"
+      - "7896"
+    ports:
+      - "4041:4041"
+      - "7896:7896"
+    environment:
+      - "IOTA_CB_HOST=orion"
+      - "IOTA_CB_PORT=1026"
+      - "IOTA_NORTH_PORT=4041"
+      - "IOTA_REGISTRY_TYPE=mongo"
+      - "IOTA_MONGO_HOST=mongo"
+      - "IOTA_MONGO_PORT=27017"
+      - "IOTA_MONGO_DB=agentjson"
+      - "IOTA_HTTP_PORT=7896"
+      - "IOTA_PROVIDER_URL=http://agentjson:4041"
+      - "IOTA_MQTT_HOST=mosquitto"
+      - "IOTA_MQTT_PORT=1883"
+      - "IOTA_LOG_LEVEL=DEBUG"
+      - "IOTA_TIMESTAMP=true"
+      - "IOTA_AUTOCAST=true"
+   
+  app:
+    image: rosiberto/titania:latest
+    container_name: app
+    restart: always
+    expose:
+      - "8500"
+    networks:
+      - reflex_default    
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: gunicorn --timeout 600 -w 4 -b 0.0.0.0:8500 app.wsgi:server
+  
+  nginx:
+    container_name: nginx
+    restart: always
+    image: rosiberto/nginx:1.0.25
+    ports:
+      - "80:80"
+    networks:
+      - reflex_default
+    depends_on:
+      - app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://app:8500/health"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s 
+    
+networks:
+  reflex_default:
+    name: reflex_default
+    driver: bridge
+
+volumes:
+  mongo: ~
