@@ -1,4 +1,4 @@
-## Example 2 - connecting Arduino to the ReFLeX.IoT without internet connect 
+## Example 2 - connecting Arduino to the TiTaniA without internet connect 
 
 em breve
 
