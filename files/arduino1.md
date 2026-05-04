@@ -1,6 +1,6 @@
-## Example 1 - connecting Arduino to the TiTaniA with internet connect 
+## Example 1 - connecting ESP32 to the TiTaniA with internet connect 
 
-Neste exemplo, conectaremos o sensor de nível ao TiTaniA usando Arduino.
+Neste exemplo, conectaremos o sensor de nível ao TiTaniA usando ESP32.
 
 
 *1 - Inclusão das Bibliotecas*
@@ -27,10 +27,11 @@ String IP_TITANIA    = "yyyyyyy"
 String PORTA         = "7896"
 String RESOURCE      = "zzzzzzz"
 String DEVICE_ID     = "wwwwwww"
-String APIKEY        = "kkkkkkk"
+String APIKEY        = "xxxxxxx"
 
 
 //definição da URL completa. Não alterar
+//verifique se deve usar http ou https
 String url = "http://"+IP_TITANIA+":"+PORTA+RESOURCE+"?i="+DEVICE_ID+"&k="+APIKEY; 
  
 
@@ -48,9 +49,9 @@ unsigned long timerDelay = 30000;
 ```
 void setup() { 
 
-  Serial.begin(9600);
+  Serial.begin(11520);
 
-  /* define 2 como pino de saída do Arduino */
+  /* define 2 como pino de saída do ESP */
   pinMode(sensorvcc, OUTPUT);
 
   /* vcc tem nível lógico baixo até que haja alguma variação na leitura */

@@ -85,9 +85,9 @@ void loop() {
 		Serial.println("Erro ao obter dados do sensor de nível"); 
       
 		return; 
-      } 	  
+    } 	  
 	  
-      http.begin( urlPath.c_str() ); 	  
+    http.begin( urlPath.c_str() ); 	  
 	  http.addHeader("Content-Type", "application/json"); 
 	  http.addHeader("fiware-service", "titania");
 	  http.addHeader("fiware-servicepath", "/");
