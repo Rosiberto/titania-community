@@ -48,4 +48,4 @@ http://<platform-host>/api/send
 
 For details about the request format, supported protocols, and payload examples, refer to the following documentation page:
 
-<a href="files/api.md">TiTaniA API Reference</a>
+<a href="api.md">TiTaniA API Reference</a>
