@@ -129,16 +129,6 @@ Define how events are grouped over time or quantity.
 
 ![](img/window-side-menu.png)
 
-#### TIME Window
-
-Defines a time-based observation window.
-
-- User specifies:
-  - Attribute
-  - Time interval
-
-![](img/time-block.png)
-
 #### LENGTH Window
 
 Defines a count-based observation window.
@@ -148,6 +138,16 @@ Defines a count-based observation window.
   - Number of events
 
 ![](img/length-block.png)
+
+#### TIME Window
+
+Defines a time-based observation window.
+
+- User specifies:
+  - Attribute
+  - Time interval
+
+![](img/time-block.png)
 
 ---
 
@@ -260,8 +260,11 @@ Defines the notification method:
 Sends notifications to an external system.
 
 - Requires:
-  - Endpoint URL
   - Message template
+  - Priority (C - Critical, W - Warnning, I - Information)
+  - Endpoint URL:
+    - Leave empty to use the default dashboard integration
+    - Or fill in a custom URL to send data to an external endpoint
 
 ![](img/post-block.png)
 

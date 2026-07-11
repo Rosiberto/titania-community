@@ -1,4 +1,4 @@
-Neste exemplo, conectaremos o sensor de nível ao TiTaniA usando Arduino.
+Neste exemplo, conectaremos o sensor de nível ao ReFLeX.IoT usando Arduino.
 
 
 *1 - Inclusão das Bibliotecas*
@@ -14,21 +14,21 @@ Neste exemplo, conectaremos o sensor de nível ao TiTaniA usando Arduino.
 const char* ssid     = "XXXX"; 
 const char* password = "XXXX"; 
  
-//IP_TITANIA - host onde o TiTaniA está instalado (e.g. localhost)
+//IP_ReFLeX.IoT - host onde o ReFLeX.IoT está instalado (e.g. localhost)
 //PORTA         - onde o AgentJson espera receber os dados do sensor
 //RESOURCE      - (e.g. /iot/json) recurso cadastrado no Service Group 
 //DEVICE_ID     - device cadastrado no Device
-//APIKEY        - chave gerada pelo TiTaniA
+//APIKEY        - chave gerada pelo ReFLeX.IoT
 
-String IP_TITANIA  = "yyyyyyy"
-String PORTA		   = "7896"
+String IP_ReFLeX.IoT = "yyyyyyy"
+String PORTA		 = "7896"
 String RESOURCE 	 = "zzzzzzz"
 String DEVICE_ID	 = "wwwwwww"
 String APIKEY 		 = "kkkkkkk"
 
 
 //definição da URL completa. Não alterar
-String url = "http://"+IP_TITANIA+":"+PORTA+RESOURCE+"?i="+DEVICE_ID+"&k="+APIKEY; 
+String url = "http://"+IP_ReFLeX.IoT+":"+PORTA+RESOURCE+"?i="+DEVICE_ID+"&k="+APIKEY; 
  
 
 //Variáveis de tempo 
@@ -57,7 +57,7 @@ void setup() {
   } 
   
   Serial.println(""); 
-  Serial.print("Conectado a Wi-Fi com IP: "); 
+  Serial.print("Conectado a WiFi com IP: "); 
   Serial.println(WiFi.localIP()); 
    
 } 
@@ -69,7 +69,7 @@ void loop() {
 
   if ((millis() - lastTime) > timerDelay) { 
   
-    //Verifica o estado da conexão Wi-Fi 
+    //Verifica o estado da conexão WiFi 
     if(WiFi.status()== WL_CONNECTED){
 		
       HTTPClient http; 
@@ -85,11 +85,11 @@ void loop() {
 		Serial.println("Erro ao obter dados do sensor de nível"); 
       
 		return; 
-    } 	  
+      } 	  
 	  
-    http.begin( urlPath.c_str() ); 	  
+      http.begin( urlPath.c_str() ); 	  
 	  http.addHeader("Content-Type", "application/json"); 
-	  http.addHeader("fiware-service", "titania");
+	  http.addHeader("fiware-service", "reflexiot");
 	  http.addHeader("fiware-servicepath", "/");
  
       // Coloca a leitura do sensor no formato JSON 
@@ -103,7 +103,7 @@ void loop() {
 	  //mostra no serial monitor o valor lido no formato json
       Serial.println(json); 
  
-	  //envia para o TiTaniA
+	  //envia para o ReFLeX.IoT
       int httpResponseCode = http.POST(json);  
 
 	  //retorno da solicitação
@@ -122,7 +122,7 @@ void loop() {
 	  http.end();
     } 
     else { 
-      Serial.println("Wi-Fi Desconectado"); 
+      Serial.println("WiFi Desconectado"); 
     } 
 	
     lastTime = millis(); 

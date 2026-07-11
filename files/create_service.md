@@ -10,11 +10,24 @@ It simplifies device management by centralizing how devices are provisioned and 
 
 ![](img/4.png)
 
-A **Service Group** in TiTaniA requires the user to provide an `Entity Type` during configuration. After clicking **Save**, the system automatically generates an `Apikey` and a `Resource`.
+A **Service Group** in TiTaniA requires the user to specify an `Entity Type` and the `communication/transport protocol` that will be used by the Service Group during its configuration.
 
-If the **UltraLight protocol** will be used, it is necessary to install the **AgentUltraLight** service from the Marketplace under **Available Services** before provisioning the Service Group.
+The supported protocols are:
 
-These values are used by devices to send data that will be processed by the IoT Agent and forwarded to the Orion Context Broker, even if the devices have not been explicitly provisioned.
+- *JSON* over HTTP
+- *JSON* over MQTT
+- *UltraLight* over HTTP
+- *UltraLight* over MQTT
+
+After clicking **Save**, the platform automatically generates an `Apikey` and a `Resource` identifier for the Service Group.
+
+If **UltraLight over HTTP** or **UltraLight over MQTT** is selected, the **AgentUltraLight** service must be installed from the **Marketplace** under **Available Services** before provisioning the Service Group.
+
+If **JSON over MQTT** is selected, the **Eclipse Mosquitto** service must be installed from the **Marketplace** under **Available Services** before provisioning the Service Group.
+
+The generated **API Key** and **Resource** values are used by devices to send data to the IoT Agent, which processes the incoming messages and forwards the corresponding context information to the Orion Context Broker.
+
+Devices can publish data using these credentials even if they have not been explicitly provisioned in advance.
 
 ---
 
@@ -25,15 +38,14 @@ These values are used by devices to send data that will be processed by the IoT 
 ![](img/6.png)
 
 
+In this example, devices authenticate using the API key `2b58f46a542446a49e2366f929918aa4`.
 
-In this example, the **IoT Agent** is configured to use the `/iot/json` endpoint, and devices authenticate by including the apikey `4dcbc8b55a7e4f6cad9ab403df5b8dbf`.
-
-For a **JSON IoT Agent**, this means that devices will send GET or POST requests to:
+Both JSON IoT Agent and UltraLight IoT Agent forward device measurements to the TiTaniA Platform API through the `/api/send` endpoint, as described in the API documentation.
 
 ```
-http://agentjson:7896/iot/json?i=<device_id>&k=4dcbc8b55a7e4f6cad9ab403df5b8dbf
+http://<platform-host>/api/send
 ```
 
-<!--
-Quando uma medição do dispositivo (e.g. sensor umidade) é enviada pelo arduino na URL do recurso, ela precisa ser interpretada e passada para o **Orion**. O atributo `entity_type` fornece um `type` padrão para cada dispositivo que fez uma solicitação (neste caso, os dispositivos anônimos serão conhecidos como entidades `Sensor`.
--->
+For details about the request format, supported protocols, and payload examples, refer to the following documentation page:
+
+<a href="files/api.md">TiTaniA API Reference</a>

@@ -33,7 +33,7 @@ services:
       - mongo:/data
       
   agentjson:
-    image: fiware/iotagent-json:3.7.0
+    image: fiware/iotagent-json:3.14.0
     hostname: agentjson
     container_name: agentjson
     restart: always
@@ -52,10 +52,8 @@ services:
       - "IOTA_CB_HOST=orion"
       - "IOTA_CB_PORT=1026"
       - "IOTA_NORTH_PORT=4041"
-      - "IOTA_REGISTRY_TYPE=mongo"
-      - "IOTA_MONGO_HOST=mongo"
-      - "IOTA_MONGO_PORT=27017"
-      - "IOTA_MONGO_DB=agentjson"
+      - "IOTA_REGISTRY_TYPE=mongodb"
+      - "IOTA_MONGO_URI=mongodb://mongo:27017/agentjson"
       - "IOTA_HTTP_PORT=7896"
       - "IOTA_PROVIDER_URL=http://agentjson:4041"
       - "IOTA_MQTT_HOST=mosquitto"
@@ -64,6 +62,7 @@ services:
       - "IOTA_TIMESTAMP=true"
       - "IOTA_AUTOCAST=true"
    
+# API                
   app:
     image: rosiberto/titania:latest
     container_name: app
